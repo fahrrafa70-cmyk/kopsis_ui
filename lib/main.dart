@@ -10,7 +10,23 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('Koperasi Sekolah')),
-        body: const Center(child: Text('Kasir Koperasi')),
+        body: Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Buku Tulis'),
+              const SizedBox(height: 8,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text('Anggota: Rp.3.000'),
+                  Text('Utama: Rp.3.500'),
+                ],
+              )
+            ],
+          )
+        ),
       ),
     );
   }
