@@ -7,82 +7,29 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Data barang
+    // Daftar Barang
     final List<Map<String, dynamic>> daftarBarang = [
-      {
-        'nama': 'Buku Tulis',
-        'kategori': 'ATK',
-        'anggota': 3000,
-        'umum': 3500,
-        'stok': 40,
-      },
-      {
-        'nama': 'Pulpen',
-        'kategori': 'ATK',
-        'anggota': 2500,
-        'umum': 3000,
-        'stok': 25,
-      },
-      {
-        'nama': 'Roti',
-        'kategori': 'Makanan',
-        'anggota': 5000,
-        'umum': 5500,
-        'stok': 15,
-      },
-      {
-        'nama': 'Susu Botol',
-        'kategori': 'Minuman',
-        'anggota': 4000,
-        'umum': 4500,
-        'stok': 0,
-      },
-      {
-        'nama': 'Pensil 2B',
-        'kategori': 'ATK',
-        'anggota': 2000,
-        'umum': 2500,
-        'stok': 30,
-      },
-      {
-        'nama': 'Penggaris 30cm',
-        'kategori': 'ATK',
-        'anggota': 1500,
-        'umum': 2000,
-        'stok': 12,
-      },
-      {
-        'nama': 'Keripik Singkong',
-        'kategori': 'Makanan',
-        'anggota': 3500,
-        'umum': 4000,
-        'stok': 20,
-      },
-      {
-        'nama': 'Air Mineral',
-        'kategori': 'Minuman',
-        'anggota': 2500,
-        'umum': 3000,
-        'stok': 50,
-      },
-      {
-        'nama': 'Teh Kemasan',
-        'kategori': 'Minuman',
-        'anggota': 3000,
-        'umum': 3500,
-        'stok': 0,
-      },
+      {'nama': 'Buku Tulis', 'kategori': 'ATK', 'anggota': 3000, 'umum': 3500, 'stok': 40},
+      {'nama': 'Pulpen', 'kategori': 'ATK', 'anggota': 2500, 'umum': 3000, 'stok': 25},
+      {'nama': 'Roti', 'kategori': 'Makanan', 'anggota': 5000, 'umum': 5500, 'stok': 15},
+      {'nama': 'Susu Botol', 'kategori': 'Minuman', 'anggota': 4000, 'umum': 4500, 'stok': 0}, // Stok 0
+      {'nama': 'Pensil 2B', 'kategori': 'ATK', 'anggota': 2000, 'umum': 2500, 'stok': 30},
+      {'nama': 'Penggaris 30cm', 'kategori': 'ATK', 'anggota': 1500, 'umum': 2000, 'stok': 12},
+      {'nama': 'Keripik Singkong', 'kategori': 'Makanan', 'anggota': 3500, 'umum': 4000, 'stok': 20},
+      {'nama': 'Air Mineral', 'kategori': 'Minuman', 'anggota': 2500, 'umum': 3000, 'stok': 50},
+      {'nama': 'Teh Kemasan', 'kategori': 'Minuman', 'anggota': 3000, 'umum': 3500, 'stok': 0}, // Stok 0
     ];
+
+    // Filter barang yang stoknya > 0 
+    final barangTersedia = daftarBarang.where((item) => item['stok'] > 0).toList();
 
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('Koperasi Sekolah')),
-        // Daftar otomatis
         body: ListView.builder(
-          itemCount: daftarBarang.length,
+          itemCount: barangTersedia.length,
           itemBuilder: (context, index) {
-            final barang = daftarBarang[index];
-            final bool isHabis = barang['stok'] == 0;
+            final barang = barangTersedia[index];
 
             return Card(
               elevation: 4,
@@ -91,10 +38,7 @@ class MyApp extends StatelessWidget {
                 leading: Icon(getCategoryIcon(barang['kategori'] ?? '')),
                 title: Text(
                   barang['nama'],
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: isHabis ? Colors.red : Colors.black,
-                  ),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,11 +48,8 @@ class MyApp extends StatelessWidget {
                   ],
                 ),
                 trailing: Text(
-                  isHabis ? 'Stok Habis' : 'Stok ' + barang['stok'].toString(),
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: isHabis ? Colors.red : Colors.black,
-                  ),
+                  'Stok ' + barang['stok'].toString(),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
             );
