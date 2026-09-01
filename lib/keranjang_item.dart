@@ -20,18 +20,18 @@ class _KeranjangItemState extends State<KeranjangItem> {
   @override
   void initState() {
     super.initState();
-    print("initState dipanggil");
+    // print("initState dipanggil");
   }
 
   @override
   void dispose() {
-    print("dispose dipanggil");
+    // print("dispose dipanggil");
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    print("build dipanggil");
+    // print("build dipanggil");
     int totalHarga = widget.hargaAnggota * jumlah;
 
     return Column(
@@ -47,7 +47,7 @@ class _KeranjangItemState extends State<KeranjangItem> {
               icon: const Icon(Icons.remove, size: 20),
               onPressed: () {
                 setState(() {
-                  print("setState dipanggil");
+                  // print("setState dipanggil");
                   if (jumlah > 1) jumlah--;
                 });
               },
@@ -62,7 +62,7 @@ class _KeranjangItemState extends State<KeranjangItem> {
               icon: const Icon(Icons.add, size: 20),
               onPressed: () {
                 setState(() { 
-                  print("setState dipanggil");
+                  // print("setState dipanggil");
                   if (jumlah < widget.stok) {
                     jumlah++;
                   } else {

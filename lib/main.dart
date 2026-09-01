@@ -3,8 +3,28 @@ import 'barang_card.dart';
 
 void main() => runApp(const MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late TextEditingController _controller;
+  String kataCari = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,28 +43,58 @@ class MyApp extends StatelessWidget {
       {'nama': 'Pensil 2B 2', 'kategori': 'ATK', 'anggota': 2000, 'umum': 2500, 'stok': 30},
       {'nama': 'Penggaris 30cm 2', 'kategori': 'ATK', 'anggota': 1500, 'umum': 2000, 'stok': 30},
       {'nama': 'Keripik Singkong 2', 'kategori': 'Makanan', 'anggota': 3500, 'umum': 4000, 'stok': 20},
-     
     ];
 
-    // Filter barang yang stoknya > 0
+    // filter stok
     final barangTersedia = daftarBarang.where((item) => item['stok'] > 0).toList();
+
+    // filter kata pencarian
+    final hasilCari = barangTersedia
+        .where((b) => b['nama'].toLowerCase().contains(kataCari))
+        .toList();
 
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('Koperasi Sekolah')),
-        body: ListView.builder(
-          cacheExtent: 0, // mematikan penyimapanan cache agar dispose() langsung berjalan 
-          itemCount: barangTersedia.length,
-          itemBuilder: (context, index) {
-            final barang = barangTersedia[index];
+        body: Column(
+          children: [
+            // 1. kotak pencarian
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: _controller,
+                decoration: const InputDecoration(
+                  hintText: 'Cari barang...',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (nilai) {
+                  setState(() {
+                    kataCari = nilai.toLowerCase();
+                  });
+                },
+              ),
+            ),
             
-            return BarangCard(
-              nama: barang['nama'],
-              hargaAnggota: barang['anggota'],
-              stok: barang['stok'],
-              kategori: barang['kategori'],
-            );
-          },
+            // 2. daftar barang dibungkus expanded
+            Expanded(
+              child: ListView.builder(
+                cacheExtent: 0,
+                itemCount: hasilCari.length,
+                itemBuilder: (context, index) {
+                  final barang = hasilCari[index];
+
+                  return BarangCard(
+                    key: ValueKey('${barang['nama']}_$index'),
+                    nama: barang['nama'],
+                    hargaAnggota: barang['anggota'],
+                    stok: barang['stok'],
+                    kategori: barang['kategori'],
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
