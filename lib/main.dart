@@ -19,6 +19,11 @@ class MyApp extends StatelessWidget {
       {'nama': 'Keripik Singkong', 'kategori': 'Makanan', 'anggota': 3500, 'umum': 4000, 'stok': 20},
       {'nama': 'Air Mineral', 'kategori': 'Minuman', 'anggota': 2500, 'umum': 3000, 'stok': 50},
       {'nama': 'Teh Kemasan', 'kategori': 'Minuman', 'anggota': 3000, 'umum': 3500, 'stok': 0},
+      {'nama': 'Susu Botol 2', 'kategori': 'Minuman', 'anggota': 4000, 'umum': 4500, 'stok': 10},
+      {'nama': 'Pensil 2B 2', 'kategori': 'ATK', 'anggota': 2000, 'umum': 2500, 'stok': 30},
+      {'nama': 'Penggaris 30cm 2', 'kategori': 'ATK', 'anggota': 1500, 'umum': 2000, 'stok': 30},
+      {'nama': 'Keripik Singkong 2', 'kategori': 'Makanan', 'anggota': 3500, 'umum': 4000, 'stok': 20},
+     
     ];
 
     // Filter barang yang stoknya > 0
@@ -28,11 +33,11 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(title: const Text('Koperasi Sekolah')),
         body: ListView.builder(
+          cacheExtent: 0, // mematikan penyimapanan cache agar dispose() langsung berjalan 
           itemCount: barangTersedia.length,
           itemBuilder: (context, index) {
             final barang = barangTersedia[index];
             
-            // Pemanggilan BarangCard sesuai parameter di barang_card.dart
             return BarangCard(
               nama: barang['nama'],
               hargaAnggota: barang['anggota'],
