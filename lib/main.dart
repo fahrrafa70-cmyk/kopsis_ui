@@ -35,14 +35,14 @@ class _MyAppState extends State<MyApp> {
       {'nama': 'Roti', 'kategori': 'Makanan', 'anggota': 5000, 'umum': 5500, 'stok': 15},
       {'nama': 'Susu Botol', 'kategori': 'Minuman', 'anggota': 4000, 'umum': 4500, 'stok': 0},
       {'nama': 'Pensil 2B', 'kategori': 'ATK', 'anggota': 2000, 'umum': 2500, 'stok': 30},
-      {'nama': 'Penggaris 30cm', 'kategori': 'ATK', 'anggota': 1500, 'umum': 2000, 'stok': 30},
-      {'nama': 'Keripik Singkong', 'kategori': 'Makanan', 'anggota': 3500, 'umum': 4000, 'stok': 20},
+      {'nama': 'Penggaris', 'kategori': 'ATK', 'anggota': 1500, 'umum': 2000, 'stok': 30},
+      {'nama': 'Kerupuk', 'kategori': 'Makanan', 'anggota': 3500, 'umum': 4000, 'stok': 20},
       {'nama': 'Air Mineral', 'kategori': 'Minuman', 'anggota': 2500, 'umum': 3000, 'stok': 50},
       {'nama': 'Teh Kemasan', 'kategori': 'Minuman', 'anggota': 3000, 'umum': 3500, 'stok': 0},
       {'nama': 'Susu Botol 2', 'kategori': 'Minuman', 'anggota': 4000, 'umum': 4500, 'stok': 10},
       {'nama': 'Pensil 2B 2', 'kategori': 'ATK', 'anggota': 2000, 'umum': 2500, 'stok': 30},
-      {'nama': 'Penggaris 30cm 2', 'kategori': 'ATK', 'anggota': 1500, 'umum': 2000, 'stok': 30},
-      {'nama': 'Keripik Singkong 2', 'kategori': 'Makanan', 'anggota': 3500, 'umum': 4000, 'stok': 20},
+      {'nama': 'Gelas', 'kategori': 'ATK', 'anggota': 1500, 'umum': 2000, 'stok': 30},
+      {'nama': 'Keripik Kaca', 'kategori': 'Makanan', 'anggota': 3500, 'umum': 4000, 'stok': 20},
     ];
 
     // filter stok
@@ -76,20 +76,36 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
             
-            // 2. daftar barang dibungkus expanded
+            // 2. daftar barang dalam bentuk kisi/grid responsif
             Expanded(
-              child: ListView.builder(
-                cacheExtent: 0,
-                itemCount: hasilCari.length,
-                itemBuilder: (context, index) {
-                  final barang = hasilCari[index];
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  int kolom;
+                  if (constraints.maxWidth < 600) {
+                    kolom = 1;
+                  } else if (constraints.maxWidth < 900) {
+                    kolom = 2;
+                  } else {
+                    kolom = 3;
+                  }
 
-                  return BarangCard(
-                    key: ValueKey('${barang['nama']}_$index'),
-                    nama: barang['nama'],
-                    hargaAnggota: barang['anggota'],
-                    stok: barang['stok'],
-                    kategori: barang['kategori'],
+                  return GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: kolom,
+                      childAspectRatio: 3,
+                    ),
+                    itemCount: hasilCari.length,
+                    itemBuilder: (context, index) {
+                      final barang = hasilCari[index];
+
+                      return BarangCard(
+                        key: ValueKey('${barang['nama']}_$index'),
+                        nama: barang['nama'],
+                        hargaAnggota: barang['anggota'],
+                        stok: barang['stok'],
+                        kategori: barang['kategori'],
+                      );
+                    },
                   );
                 },
               ),
